@@ -18,16 +18,15 @@ while (1):
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame, frame, mask=mask)
     nzCount = cv2.countNonZero(mask)
-    if nzCount > width * height / 3:
+    if nzCount > width * height / 5:
         flag = 1
     else:
         flag = 0
-    if flag == 0:
-        cv2.imshow('mask', mask)
-    elif flag == 1:
-        cv2.imshow('frame', frame)
+    if flag == 1:
+        cv2.imshow('res', res)
+    elif flag == 0:
+        cv2.imshow('res', frame)
 
-    #cv2.imshow('res', res)
     k = cv2.waitKey(5) & 0xFF
     if k == 0:
         temp = 1
