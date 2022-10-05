@@ -5,7 +5,9 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-
+nzCount = 0
+flag = 0
+temp = 0
 
 while (1):
     ret, frame = cap.read()
@@ -15,18 +17,22 @@ while (1):
 
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame, frame, mask=mask)
-    #cv2.imshow('frame', frame)
-    cv2.imshow('mask', mask)
-    #cv2.imshow('res', res)
+    nzCount = cv2.countNonZero(mask)
+    if nzCount > width * height / 3:
+        flag = 1
+    else:
+        flag = 0
+    if flag == 0:
+        cv2.imshow('mask', mask)
+    elif flag == 1:
+        cv2.imshow('frame', frame)
 
+    #cv2.imshow('res', res)
     k = cv2.waitKey(5) & 0xFF
+    if k == 0:
+        temp = 1
     if k == 27:
-        nzCount = cv2.countNonZero(mask);
         break
-print(nzCount)
-print(width, height)
-if nzCount > width * height / 3:
-    print("WELL DONE")
 
 cv2.destroyAllWindows()
 
