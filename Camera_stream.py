@@ -1,6 +1,6 @@
 from pioneer_sdk import Pioneer, Camera
 import numpy as np
-import
+import cv2
 pioneer_mini = Pioneer()
 camera = Camera()
 pioneer_mini.disarm()
