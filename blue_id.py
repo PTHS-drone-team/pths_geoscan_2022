@@ -31,7 +31,7 @@ while (1):
     if k == 0:
         temp = 1
     if k == 27:
-        break
+        break 
 
 cv2.destroyAllWindows()
 
