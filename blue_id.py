@@ -18,7 +18,7 @@ while (1):
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame, frame, mask=mask)
     nzCount = cv2.countNonZero(mask)
-    if nzCount > width * height / 5:
+    if nzCount > width * height / 30:
         flag = 1
     else:
         flag = 0
