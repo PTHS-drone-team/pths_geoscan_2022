@@ -20,18 +20,18 @@ while True:
         frame = camera_frame = cv2.imdecode(np.frombuffer(raw_frame, dtype=np.uint8), cv2.IMREAD_COLOR)
         corners, ids, rejected = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams)
 
-        if time.time() - curr_time > delta_time:
-            for i in range(4):
-                if ids and 4 in ids:
-                    pioneer.led_control(i, 255, 0, 0)
-                else:
-                    pioneer.led_control(i, 0, 0, 0)
-
-            curr_time = time.time()
-
         # Обводим распознанные маркеры на изображении
         cv2.aruco.drawDetectedMarkers(frame, corners, ids)
         cv2.imshow('video', frame)  # Выводим изображение на экран
+
+        if ids and 4 in ids:
+            pioneer.land()
+            pioneer.disarm()
+
+        if ids and 5 in ids:
+            pioneer.arm()
+            pioneer.takeoff()
+
 
     if cv2.waitKey(1) & 0xFF == 27:  # Выход из программы, если нажали ESC
         break
