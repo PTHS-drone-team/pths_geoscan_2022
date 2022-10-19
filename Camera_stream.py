@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 pioneer_mini = Pioneer()
 camera = Camera()
-pioneer_mini.disarm()
 while True:
     frame = camera.get_frame()
     if frame is not None:
