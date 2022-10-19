@@ -8,6 +8,7 @@ pioneer_mini = Pioneer()
 camera = Camera()
 pioneer_mini.arm()
 pioneer_mini.takeoff()
+yaw = np.pi / 2
 while True:
     frame = camera.get_frame()
     if frame is not None:
@@ -16,9 +17,13 @@ while True:
         corners, ids, rejected = cv2.aruco.detectMarkers(camera_frame, arucoDict, parameters=arucoParams)
         cv2.aruco.drawDetectedMarkers(camera_frame, corners, ids, [255, 0, 0])
 
-        if ids == [[0]]:
+        if ids == [[5]]:
+            pioneer_mini.led_control(255, 0, 0)
             pioneer_mini.land()
             break
+        elif ids == [[6]]:
+            pioneer_mini.go_to_local_point_body_fixed(0, 0, 0, yaw)
+
 
         dsize = (1024, 768)
         output = cv2.resize(camera_frame, dsize)
