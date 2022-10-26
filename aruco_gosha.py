@@ -24,6 +24,8 @@ while True:
         else:
             print("OK")
 
+    cv2.line(frame, (dsize[0] // 2 - 150, 0), (dsize[0] // 2 - 150, dsize[1]), (255, 0, 0))
+    cv2.line(frame, (dsize[0] // 2 - 50, 0), (dsize[0] // 2 - 50, dsize[1]), (255, 0, 0))
     output = cv2.resize(frame, dsize)
     cv2.imshow('video', output) # Выводим изображение на экран
 
