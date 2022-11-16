@@ -13,24 +13,25 @@ while True:
     success, frame = cap.read()
     corners, ids, rejected = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams) # Детектируем маркеры
     dc = cv2.aruco.drawDetectedMarkers(frame, corners, ids) # Обводим распознанные маркеры на изображении
-    dsize = (int(frame.shape[1]), int(frame.shape[0])) 
+    dsize = (int(frame.shape[1]), int(frame.shape[0]))
+    r = 50
     if len(corners) > 0:
         center = (int((corners[0][0][0][0] + corners[0][0][2][0]) / 2),
                   int((corners[0][0][0][1] + corners[0][0][2][1]) / 2))
         frame = cv2.circle(frame, (center[0], center[1]), 10, (0, 255, 0), -1)
-        if center[0] >= dsize[0] // 2 - 30 and center[0] <= dsize[0] // 2 + 30:
+        if center[0] >= dsize[0] // 2 - r and center[0] <= dsize[0] // 2 + r:
             print("OK")
             command = 0
-        elif center[0] > dsize[0] // 2 + 30:
+        elif center[0] > dsize[0] // 2 + r:
             print("right")
             command = -yaw
-        elif center[0] < dsize[0] // 2 - 30:
+        elif center[0] < dsize[0] // 2 - r:
             print("left")
             command = yaw
        # print(center, frame.shape, dsize, sep = "\n")
 
-    frame = cv2.line(frame, (dsize[0] // 2 - 30, 0), (dsize[0] // 2 - 30, dsize[1]), (255, 0, 0))
-    frame = cv2.line(frame, (dsize[0] // 2 + 30, 0), (dsize[0] // 2 + 30, dsize[1]), (255, 0, 0))
+    frame = cv2.line(frame, (dsize[0] // 2 - r, 0), (dsize[0] // 2 - r, dsize[1]), (255, 0, 0))
+    frame = cv2.line(frame, (dsize[0] // 2 + r, 0), (dsize[0] // 2 + r, dsize[1]), (255, 0, 0))
     #output = cv2.resize(frame, dsize)
     cv2.imshow('video', frame) # Выводим изображение на экран
 
