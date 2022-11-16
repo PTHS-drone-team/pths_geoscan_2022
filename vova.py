@@ -8,8 +8,14 @@ arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 # Параметры детектирования (в данном случае параметры по умолчанию)
 arucoParams = cv2.aruco.DetectorParameters_create()
 
-camera = Camera()
-pioneer = Pioneer()
+drone_ips = ["192.168.137.28"]
+
+cameras = [Camera(ip) for ip in drone_ips]
+pioneers = [Pioneer(ip) for ip in drone_ips]
+
+camera = cameras[0]
+pioneer = pioneers[0]
+
 curr_time = time.time()
 delta_time = 0.05
 
@@ -24,8 +30,8 @@ while True:
     ch_3 = 1500
     ch_4 = 1500
     ch_5 = 2000
-
     if raw_frame is not None:
+
         frame = camera_frame = cv2.imdecode(np.frombuffer(raw_frame, dtype=np.uint8), cv2.IMREAD_COLOR)
 
         frame_width = int(frame.shape[1])
