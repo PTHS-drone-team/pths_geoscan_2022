@@ -37,7 +37,7 @@ class DistanceAruco:
         return self.gray_frame
 
     def get_marker_corners(self, frame):
-        self.marker_corners, self.marker_IDs, reject = aruco.detectMarkers(
+        self.marker_corners, self.marker_IDs, self.reject = aruco.detectMarkers(
             self.get_frame(frame), self.marker_dict, parameters=self.param_markers
         )
         return self.marker_corners
@@ -70,12 +70,16 @@ class DistanceAruco:
             self.distance = None
             return self.distance
 
-    def get_command_to_ch_3(self):
-        self.d = 10
-        if self.distance is not None:
-            if self.distance < self.direction_change_value:
-                return 1500 - self.speed_ch_3
-            elif self.distance >= self.direction_change_value and self.distance <= self.direction_change_value + self.d:
-                return 1500
-            elif self.distance > self.direction_change_value + self.d:
+    def get_command_to_ch_3(self, dist):
+        self.d = 10.0
+        if dist is not None:
+            if dist < self.direction_change_value:
                 return 1500 + self.speed_ch_3
+            # elif self.distance >= self.direction_change_value and self.distance <= self.direction_change_value + self.d:
+            #     return 1500
+            elif dist > self.direction_change_value - self.d:
+                return 1500 + self.speed_ch_3
+            else:
+                return 1500
+        else:
+            return 1500

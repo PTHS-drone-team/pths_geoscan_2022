@@ -14,6 +14,7 @@ while True:
     corners, ids, rejected = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams) # Детектируем маркеры
     dc = cv2.aruco.drawDetectedMarkers(frame, corners, ids) # Обводим распознанные маркеры на изображении
     dsize = (int(frame.shape[1]), int(frame.shape[0]))
+    print(dsize)
     r = 50
     if len(corners) > 0:
         center = (int((corners[0][0][0][0] + corners[0][0][2][0]) / 2),
