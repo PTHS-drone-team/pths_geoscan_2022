@@ -1,46 +1,59 @@
 import time
+import random
 import cv2
 import numpy as np
 from pioneer_sdk import Camera, Pioneer
 
-drone_ips = ["192.168.137.28"]
+drone_ips = ["192.168.137.227", "192.168.137.126", "192.168.137.179"]
+drone_names = {"192.168.137.227": "drone1", "192.168.137.126": "drone2", "192.168.137.179": "drone3"}
 
-cameras = [Camera(ip) for ip in drone_ips]
-pioneers = [Pioneer(ip) for ip in drone_ips]
+cameras = [Camera(drone_names[ip], ip=ip) for ip in drone_ips]
+pioneers = [Pioneer(drone_names[ip], ip=ip) for ip in drone_ips]
+
+time.sleep(3)
 
 # Поочерёдно поднимаем и опускаем каждый дрон
-while True:
-    for i in range(len(pioneers)):
-        pioneer = pioneers[i]
-        camera = cameras[i]
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 2000)
-        time.sleep(1)
-        pioneer.send_rc_channels(1500, 1500, 1500, 1500, 1000)
+for i in range(len(pioneers)):
+    pioneers[i].arm()
+
+for i in range(len(pioneers)):
+    pioneers[i].takeoff()
+    pioneers[i].go_to_local_point(0, 0, 1, 0)
+    t = time.time()
+    while not pioneers[i].point_reached():
+        if time.time() - t > 3:
+            break
+        pass
+
+
+time.sleep(5)
+for i in range(len(pioneers)):
+    pioneers[i].land()
+    pioneers[i].disarm()
+
+
+#
+#   for i in range(len(pioneers)):
+#     pioneers[i].go_to_local_point(0, 0, 2, 0)
+#     time.sleep(3)
+#     pioneers[i].go_to_local_point(0, 0, 1, 0)
+#
+#
+# for i in range(len(pioneers)):
+#     pioneers[i].land()
+#     pioneers[i].disarm()
+
+
+# time.sleep(2)
+# for ii in range(2):
+#     for i in range(len(pioneers)):
+#         pioneer = pioneers[i]
+#         camera = cameras[i]
+#         pioneers[i].arm()
+#         time.sleep(1)
+#         pioneer.takeoff()
+#         time.sleep(2)
+#         pioneer.land()
+#
+# for i in range(len(pioneers)):
+#     pioneers[i].disarm()
