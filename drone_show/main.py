@@ -4,4 +4,13 @@ import numpy as np
 from pioneer_sdk import Camera, Pioneer
 import time
 
-drone_names = {"192.168.137.73": "drone1", "192.168.137.190": "drone2", "192.168.137.145": "drone3"}
+pioneer = Pioneer()
+
+
+pioneer.arm()
+pioneer.takeoff()
+pioneer.lua_script_control("Start")
+time.sleep(5)
+pioneer.lua_script_control("Stop")
+pioneer.land()
+pioneer.disarm()
