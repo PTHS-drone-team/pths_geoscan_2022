@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 from pioneer_sdk import Camera, Pioneer
 
-drone_ips = ["192.168.137.227", "192.168.137.126", "192.168.137.179"]
-drone_names = {"192.168.137.227": "drone1", "192.168.137.126": "drone2", "192.168.137.179": "drone3"}
+drone_ips = ["192.168.137.73", "192.168.137.190", "192.168.137.145"]
+drone_names = {"192.168.137.73": "drone1", "192.168.137.190": "drone2", "192.168.137.145": "drone3"}
 
 cameras = [Camera(drone_names[ip], ip=ip) for ip in drone_ips]
 pioneers = [Pioneer(drone_names[ip], ip=ip) for ip in drone_ips]
@@ -25,8 +25,22 @@ for i in range(len(pioneers)):
             break
         pass
 
+for i in range(len(pioneers)):
+    pioneers[i].go_to_local_point(0, 0, 2, 0)
+    t = time.time()
+    while not pioneers[i].point_reached():
+        if time.time() - t > 3:
+            break
+        pass
 
-time.sleep(5)
+    pioneers[i].go_to_local_point(0, 0, 1, 0)
+    t = time.time()
+    while not pioneers[i].point_reached():
+        if time.time() - t > 3:
+            break
+        pass
+
+
 for i in range(len(pioneers)):
     pioneers[i].land()
     pioneers[i].disarm()
